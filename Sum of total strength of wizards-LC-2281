@@ -1,1 +1,55 @@
+//#Best question
+class Solution {
+public:
+    int totalStrength(vector<int>& s) 
+    {
+        int mod = 1e9 + 7;
+        long long sum = 0;
+        int n = s.size();
+        vector<int> pre(n+1, 0);
+        vector<int> prefix_pre(n+2, 0);
 
+        for (int i=0; i<n; i++) 
+        {
+            pre[i+1] = (pre[i] + s[i])%mod;
+        }
+        for (int i=0; i<=n; i++) 
+        {
+            prefix_pre[i+1] = (prefix_pre[i] + pre[i])%mod;
+        }
+
+        stack<int> st;
+        vector<int> left(n), right(n);
+        for (int i=0; i<n; i++) 
+        {
+            while (!st.empty() && s[i]<=s[st.top()])
+            {
+                st.pop();
+            }
+            left[i] = st.empty()? -1 :st.top();
+            st.push(i);
+        }
+        while (!st.empty()) 
+        {
+            st.pop();
+        }
+        for (int i=n-1; i>=0; i--) 
+        {
+            while (!st.empty() && s[i]<s[st.top()]) 
+            {
+                st.pop();
+            }
+            right[i] = st.empty() ?n :st.top();
+            st.push(i);
+        }
+        for (int i=0; i<n; i++) 
+        {
+            long long left_sum = (prefix_pre[i + 1] - prefix_pre[left[i] + 1] + mod) % mod;
+            long long right_sum = (prefix_pre[right[i] + 1] - prefix_pre[i + 1] + mod) % mod;
+            long long total = ((right_sum * (i - left[i]) % mod) - (left_sum * (right[i] - i) % mod) + mod) % mod * s[i] % mod;
+            sum = (sum +total) % mod;
+        }
+        
+        return (sum+mod) % mod;
+    }
+};
