@@ -1,0 +1,38 @@
+class Solution {
+    long long cnt=0;
+    void dfs(int src , vector<vector<int>> &adj , vector<bool> &vis)
+    {
+        if(vis[src]==true) return;
+        vis[src] = true;
+        cnt++;
+        for(auto it: adj[src])
+        {
+            if(vis[it]==0)
+            {
+                //cnt++;
+                dfs(it, adj , vis);
+            }
+        }
+    }
+public:
+    long long countPairs(int n, vector<vector<int>>& edges) 
+    {
+        long long cnt1 = n, res=0;
+       //Make adjacency list
+       vector<vector<int>> adj(n+1);
+       for(auto i: edges)
+       {
+           adj[i[0]].push_back(i[1]);
+           adj[i[1]].push_back(i[0]);
+       } 
+       vector<bool> vis(n+1 , 0);
+       for(int i=0; i<n; i++)
+       {
+           cnt=0;
+           dfs(i , adj , vis);
+           res += cnt*(cnt1-cnt);
+           cnt1-=cnt;
+       }
+       return res;
+    }
+};
