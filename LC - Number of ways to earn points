@@ -1,0 +1,32 @@
+class Solution {
+    int mod = 1e9 + 7;
+public:
+    int helper(int idx, int sum, int target, vector<vector<int>> &types, vector<vector<int>> &dp)
+    {
+        int n = types.size();
+        if (sum == target)
+        {
+            return 1;
+        }
+        if (sum > target || idx >= n)
+        {
+            return 0;
+        }
+        if (dp[idx][sum] != -1)
+        {
+            return dp[idx][sum];
+        }
+        int res = 0;
+        for (int i = 0; i <= types[idx][0]; i++)
+        {
+            res = (res + helper(idx + 1, sum + i * types[idx][1], target, types, dp)) % mod;
+        }
+        return dp[idx][sum] = res;
+    }
+    int waysToReachTarget(int target, vector<vector<int>>& types) 
+    {
+        int n = types.size();
+        vector<vector<int>> dp(n + 1, vector<int>(target + 1, -1));
+        return helper(0, 0, target, types, dp);    
+    }
+};
