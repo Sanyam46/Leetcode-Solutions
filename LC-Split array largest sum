@@ -1,0 +1,50 @@
+class Solution {
+public:
+//helper function to calculate the number of partitions
+int helper(vector<int> &nums , int maxi)
+{
+    int n = nums.size();
+    long int sum=0;
+    int partitions = 1;
+    for(int i=0; i<n; i++)
+    {
+        if(sum+nums[i] <= maxi)
+        {
+            sum += nums[i];
+        }
+        else
+        {
+            sum = nums[i];
+            partitions++;
+        }
+    }
+    return partitions;
+}
+    int splitArray(vector<int>& nums, int k) 
+    {
+        int n = nums.size();
+        long int sum=0, maxi=0;
+        for(int i=0; i<n; i++)
+        {
+            sum += nums[i];
+            if(nums[i]>maxi)
+            {
+                maxi = nums[i];
+            }
+        }
+        int s = maxi , e=sum;
+        while(s<=e)
+        {
+            long int mid = s+(e-s)/2;
+            if(helper(nums , mid)>k)
+            {
+                s=mid+1;
+            }
+            else
+            {
+                e= mid-1;
+            }
+        }
+        return s;
+    }
+};
