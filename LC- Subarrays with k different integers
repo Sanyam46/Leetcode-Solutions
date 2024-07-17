@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) 
+    {
+        int n = nums.size();
+        int s=0, e=0, cnt1=0, cnt2=0;
+        map<int, int> mp;
+        while(e<n)
+        {
+            mp[nums[e]]++;
+            while(mp.size()>k and s<=e)
+            {
+                mp[nums[s]]--;
+                if(mp[nums[s]]==0)
+                {
+                    mp.erase(nums[s]);
+                }
+                s++;
+            }
+            cnt2+= e-s+1;
+            e++;
+        }   
+        map<int, int> mp2;
+        s=0; e=0;
+        while(e<n)
+        {
+            mp2[nums[e]]++;
+            while(mp2.size()> k-1 and s<=e)
+            {
+                mp2[nums[s]]--;
+                if(mp2[nums[s]]==0)
+                {
+                    mp2.erase(nums[s]);
+                }
+                s++;
+            }
+            cnt1 += e-s+1;
+            e++;
+        }
+        return cnt2-cnt1;
+    }
+};
