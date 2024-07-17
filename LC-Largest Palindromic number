@@ -1,0 +1,45 @@
+class Solution {
+public:
+    string largestPalindromic(string num) 
+    {
+        map<char, int> mp;
+        for (auto i : num) 
+        {
+            mp[i]++;
+        }
+        char maxi_1 = 0;
+        string even = "";
+        for (auto& i : mp) 
+        {
+            if (i.second%2==1) 
+            {
+                if (maxi_1<i.first) 
+                {
+                    maxi_1 = i.first;
+                }
+            }
+            for(int j=0; j<i.second/2; j++)
+            {
+                even += i.first;
+            }
+        }
+        sort(even.rbegin(), even.rend());
+        if (even[0] == '0') 
+        {
+            even = "";
+        }
+        string res = even;
+        if (maxi_1 != 0) 
+        {
+            res += maxi_1;
+        }
+        string r = even;
+        reverse(r.begin(), r.end());
+        res += r;
+        if(res.empty())
+        {
+            return "0";
+        }
+        return res;
+    }
+};
