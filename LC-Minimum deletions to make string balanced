@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int minimumDeletions(string s) {
+        int n=s.length();
+        int cnt=0, ans=0;
+        /*stack<char> st;
+        for(int i=0; i<n; i++)
+        {
+            st.push(s[i]);
+        }
+        while(!st.empty())
+        {
+            char c=st.top();
+            st.pop();
+            if(c=='a')
+            {
+                cnt++;
+            }
+            else if(c=='b' and cnt>0)
+            {
+                cnt--;
+                ans++;
+            }
+        }*/
+        for(int i=n-1; i>=0; i--)
+        {
+            if(s[i]=='a')
+            {
+                cnt++;
+            }
+            else if(s[i]=='b' and cnt>0)
+            {
+                cnt--;
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
