@@ -1,0 +1,56 @@
+class Solution {
+    private:
+    TreeNode* LCA(TreeNode* root, TreeNode* p , TreeNode* q)
+    {
+        if(root==NULL or root==p or root==q)
+        {
+            return root;
+        }
+        TreeNode* left = LCA(root->left , p , q);
+        TreeNode* right = LCA(root->right , p ,q);
+        if(left==NULL)
+        {
+            return right;
+        }
+        if(right==NULL)
+        {
+            return left;
+        }
+        return root;
+    }
+public:
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        if(root==NULL)
+        {
+            return NULL;
+        }
+        queue<TreeNode*> q;
+        vector<vector<TreeNode*>> v;
+        q.push(root);
+        while(!q.empty())
+        {
+            int size = q.size();
+            vector<TreeNode*> levels;
+            for(int i=0; i<size; i++)
+            {
+                TreeNode* node = q.front();
+                q.pop();
+                levels.push_back(node);
+                if(node->left)
+                {
+                    q.push(node->left);
+                }
+                if(node->right)
+                {
+                    q.push(node->right);
+                }
+            }
+            v.push_back(levels);
+        }
+        int size = v.size();
+        vector<TreeNode*> level = v[size-1];
+        TreeNode* left = level[0];
+        TreeNode* right = level[level.size()-1];
+        return LCA(root , left , right);
+    }
+};
