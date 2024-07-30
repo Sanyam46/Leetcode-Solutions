@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+//Single BFS traversal
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        if(root==NULL)
+        {
+            return NULL;
+        }
+        if(!root->left and !root->right)
+        {
+            return root;
+        }
+        queue<TreeNode*> q;
+        vector<int> arr;
+        q.push(root);
+        int level=1;
+        while(!q.empty())
+        {
+            int size = q.size();
+            vector<int> levels;
+            for(int i=0; i<size; i++)
+            {
+                TreeNode* node = q.front();
+                q.pop();
+                if(level%2==0)
+                {
+                    node->val = arr[size-i-1];
+                }
+                if(node->left)
+                {
+                    q.push(node->left);
+                    levels.push_back(node->left->val);
+                }
+                if(node->right)
+                {
+                    q.push(node->right);
+                    levels.push_back(node->right->val);
+                }
+            }
+            arr = levels;
+            /*for(auto i: arr)
+            {
+                cout<<i<<" ";
+            } 
+            cout<<endl;*/
+            level++;
+            //cout<<level<<endl;
+        }
+        return root;
+    }
+};
