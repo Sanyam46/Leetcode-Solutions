@@ -1,0 +1,58 @@
+class Solution {
+    int mod = 1e9+7;
+    long long int helper(long long a, long long b)
+    {
+        long long res=1;
+        while(b>0)
+        {
+            if(b%2==1)
+            {
+                res = (res*a)%mod;
+            }
+            a = (a*a)%mod;
+            b=b/2;
+        }
+        return res;
+    }
+public:
+    int countAnagrams(string s) {
+        int mod = 1e9+7;
+        int n=s.length();
+        vector<long long int> fac(n+1,1);
+        vector<long long int> inv(n+1,1);
+        for(int i=1; i<=n; i++)
+        {
+            fac[i] = (fac[i-1]*(i))%mod;
+        }
+        inv[n] = helper(fac[n], mod-2);
+        inv[n] %= mod;
+        for(int i=n-1; i>=0; i--)
+        {
+            inv[i] = inv[i+1]*(i+1)%mod;
+        }
+        long long int ans=1;
+        int idx=0;
+        while(idx<n)
+        {
+            string res="";
+            vector<int> count(26, 0);
+            while(s[idx]!=' ' and idx<n)
+            {
+                res+= s[idx];
+                count[s[idx]-'a']++;
+                idx++;
+            }
+            int len = res.length();
+            ans = (ans*fac[len])%mod;
+            for(int i=0; i<26; i++)
+            {
+                if(count[i]>0)
+                {
+                    ans = (ans*inv[count[i]])%mod;
+                }
+            }
+            idx++;
+        }
+        return ans%mod;
+    }
+};
