@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int helper(int i, vector<int> &stoneValue ,vector<int> &dp, int n)
+    {
+        if(i>=n)
+        {
+            return 0;
+        }
+        if(dp[i]!=INT_MIN)
+        {
+            return dp[i];
+        }
+        int sum=0;
+        for(int a=i; a<i+3 and a<n; a++)
+        {
+            sum += stoneValue[a];
+            dp[i] = max(dp[i], sum-helper(a+1 , stoneValue , dp , n));
+            //cout<<dp[i]<<" ";
+        }
+        //cout<<endl;
+        return dp[i];
+    }
+    string stoneGameIII(vector<int>& stoneValue) 
+    {
+        int n=stoneValue.size();
+        vector<int> dp(n,INT_MIN);
+        int res = helper(0, stoneValue , dp , n);
+        if(res>0)
+        {
+            return "Alice";
+        }
+        else if(res==0)
+        {
+            return "Tie";
+        }
+        else if(res<0)
+        {
+            return "Bob";
+        }
+        else
+        {
+            return "";
+        }
+    }
+};
